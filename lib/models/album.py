@@ -1,5 +1,5 @@
 from models.__init__ import CONN, CURSOR
-import colorama
+
 
 class Album:
     
@@ -51,9 +51,6 @@ class Album:
               self._artist_id = artist_id_param
         else:
               raise Exception('Artist ID must be an Integer.')
-        
-  def __repr__(self):
-        return (colorama.Fore.LIGHTGREEN_EX + f"< Album {self.id}: Name = {self.name}, Year = {self.year}, Songs = {self.songs}, Artist ID = {self.artist_id} >")
   
   @classmethod
   def create_table(cls):

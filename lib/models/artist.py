@@ -1,5 +1,5 @@
 from models.__init__ import CONN, CURSOR
-import colorama
+
 
 class Artist:
     
@@ -18,9 +18,6 @@ class Artist:
             self._name = name_param
         else:
             raise Exception('Artist name has to be a string.')
-        
-    def __repr__(self):
-        return (colorama.Fore.LIGHTGREEN_EX + f"< Artist {self.id}: Name = {self.name} >")
 
     @classmethod
     def create_table(cls):
