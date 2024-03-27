@@ -14,7 +14,7 @@ def initialize_artist_data():
 
 
 def interact_with_artist_data():
-    print(colorama.Fore.LIGHTGREEN_EX + "You are interacting with the artist data.")
+    console.log("You are interacting with the artist data.", style="bright_green")
     while True:
         artist_menu()
         user_input = input("Select and option: ")

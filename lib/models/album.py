@@ -147,8 +147,8 @@ class Album:
         """
         rows = CURSOR.execute(sql, (year,)).fetchall()
 
-        cls.all = [cls.instance_from_db(row) for row in rows]
-        return cls.all
+        albums_found = [album for album in cls.all if album.year == year]
+        return albums_found if albums_found else None
   
   def update(self):
         sql = """

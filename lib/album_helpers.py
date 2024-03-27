@@ -2,6 +2,7 @@ from models.album import Album
 from rich.console import Console
 from fetching_code import *
 from rich.table import Table
+from load_bar import *
 import colorama
 
 def initialize_album_data():
@@ -9,7 +10,7 @@ def initialize_album_data():
     Album.get_all()
 
 def interact_with_album_data():
-    print(colorama.Fore.LIGHTYELLOW_EX + "You are interacting with the album data.")
+    print("You are interacting with the album data.")
     while True:
         album_menu()
         user_input = input("Please select one of the following options:")
@@ -69,8 +70,15 @@ def search_for_album():
                     user_input = int(user_input)
                     album = Album.find_by_id(user_input)
                     if(album):
-                        print("\nHere is the album that matched the entered id:")
-                        print(Album.find_by_id(user_input))
+                        shorter_fetching_animation()
+                        table = Table(title="Album by ID")
+                        table.add_column("ID", style="cyan")
+                        table.add_column("Name", style="magenta")
+                        table.add_column("Year", style="blue")
+                        table.add_column("Favorite Song", style="magenta")
+                        table.add_column("Artist ID", style="white")
+                        table.add_row(str(album.id), album.name, str(album.year), album.songs, str(album.artist_id))
+                        console.print(table)
                     else:
                             print("\nAlbum not found!")
                     user_input = input("\n Press 'return' to continue.")
@@ -83,10 +91,18 @@ def search_for_album():
                 try:
                     user_input = input("\nEnter album's release year: ")
                     user_input = int(user_input)
-                    year = Album.find_by_year(user_input)
-                    if(year):
-                        print("\nHere is the album that matched the entered year:")
-                        print(Album.find_by_year(user_input))
+                    albums = Album.find_by_year(user_input)
+                    if(albums):
+                        shorter_fetching_animation()
+                        table = Table(title="Album by year")
+                        table.add_column("ID", style="cyan")
+                        table.add_column("Name", style="magenta")
+                        table.add_column("Year", style="blue")
+                        table.add_column("Favorite Song", style="magenta")
+                        table.add_column("Artist ID", style="white")
+                        for album in albums:
+                          table.add_row(str(album.id), album.name, str(album.year), album.songs, str(album.artist_id))
+                        console.print(table)                        
                     else:
                         print("\nAlbum not found!")
                     user_input = input("\n Press 'return' to continue.")
@@ -105,7 +121,15 @@ def create_new_album():
     artist_id = int(artist_id)
     try:
         new_album = Album.create(name, year, songs, artist_id)
-        print(f"Success {new_album} was created")
+        experimental_loadbar()
+        table = Table(title="Here is the new album you created:")
+        table.add_column("ID", style="cyan")
+        table.add_column("Name", style="magenta")
+        table.add_column("Year", style="blue")
+        table.add_column("Favorite Song", style="magenta")
+        table.add_column("Artist ID", style="white")
+        table.add_row(str(new_album.id), new_album.name, str(new_album.year), new_album.songs, str(new_album.artist_id))
+        console.print(table)
         user_input = input("\n Press 'return' to continue.")
     except Exception as exc:
         print("Error, new album could not be created.", exc)
@@ -114,6 +138,7 @@ def update_album():
     user_input = input("Enter album's ID: ")
     user_input = int(user_input)
     album = Album.find_by_id(user_input)
+    shorter_fetching_animation()
     if(album):
         updated_album_name = input("Enter updated album name: ")
         album.name = updated_album_name
@@ -124,7 +149,15 @@ def update_album():
         updated_album_artist_id = input("Enter updated album artist's ID: ")
         album.artist_id = int(updated_album_artist_id)
         album.update()
-        print(f"Success, {album} was updated.")
+        experimental_loadbar()
+        table = Table(title="Here is the new album you created:")
+        table.add_column("ID", style="cyan")
+        table.add_column("Name", style="magenta")
+        table.add_column("Year", style="blue")
+        table.add_column("Favorite Song", style="magenta")
+        table.add_column("Artist ID", style="white")
+        table.add_row(str(album.id), album.name, str(album.year), album.songs, str(album.artist_id))
+        console.print(table)
         user_input = input("\n Press 'return' to continue.")
     else:
         raise Exception("Album could not be updated.")
@@ -145,11 +178,21 @@ def list_of_artists():
     artist_id = input("Enter artist's ID: ")
     artist_id = int(artist_id)
     artist = Artist.find_by_id(artist_id)
+    fetching_animation()
     if(artist):
         albums = artist.albums()
+            
+        table = Table(title="Here's a list of the Artists and their albums:")
+        table.add_column("Artist Name", style="slate_blue3")
+        table.add_column("ID", style="cyan")
+        table.add_column("Name", style="magenta")
+        table.add_column("Year", style="blue")
+        table.add_column("Favorite Song", style="magenta")
+        table.add_column("Artist ID", style="white")
         for album in albums:
-            print(artist)
-            print(album)
+            table.add_row(artist.name, str(album.id), album.name, str(album.year), album.songs, str(album.artist_id))
+        console.print(table)
+
     else:
         print(f"Artist {artist_id} was not found.")
     user_input = input("\n Press 'return' to continue.")
