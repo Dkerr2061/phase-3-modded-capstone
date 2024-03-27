@@ -142,7 +142,7 @@ def update_artist():
         artist.name = updated_artist_name
         artist.update()
         experimental_loadbar()
-        table = Table(title="Here is the new artist you created:")
+        table = Table(title="Here is the updated artist:")
         table.add_column("ID", style="cyan")
         table.add_column("Name", style="magenta")
         table.add_row(str(artist.id), artist.name)
