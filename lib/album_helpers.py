@@ -5,6 +5,8 @@ from rich.table import Table
 from load_bar import *
 import colorama
 
+console = Console()
+
 def initialize_album_data():
     Album.create_table()
     Album.get_all()

@@ -1,13 +1,14 @@
 # lib/cli.py
 import colorama
-
+from rich.console import Console
 from load_bar import *
 from artist_helpers import *
 from album_helpers import *
-    
+
+console = Console()    
 
 def exit_program():
-    print(colorama.Fore.LIGHTYELLOW_EX + "Goodbye!\n")
+    console.print("Goodbye!\n")
     exit()
 
 def main():
@@ -21,18 +22,16 @@ def main():
         elif choice == "2":
             interact_with_album_data()
         else:
-            print("Invalid choice, please try again!\n")
+            console.print("Invalid choice, please try again!\n", style="bright_red")
 
 
 def menu():
-    print(colorama.Fore.LIGHTMAGENTA_EX + "\nWelcome!")
-    print(colorama.Back.RESET)
-    print(colorama.Fore.LIGHTRED_EX + "Please select an option:")
-    print(colorama.Fore.RESET)
-    print(colorama.Fore.LIGHTCYAN_EX + "1. Access Artist Data")
-    print(colorama.Fore.LIGHTCYAN_EX + "2. Access Album Data")
-    print(colorama.Fore.LIGHTCYAN_EX + "0. Exit the program")
-    print(colorama.Fore.RESET)
+    console.print("Welcome!", style="bright_cyan")
+    console.print("\nPlease select an option:", style="underline")
+    console.print("1. Access Artist Data", style="bright_yellow")
+    console.print("2. Access Album Data", style="bright_yellow")
+    console.print("0. Exit the program", style="bright_yellow")
+
     
 
 
