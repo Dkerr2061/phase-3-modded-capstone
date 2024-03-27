@@ -1,6 +1,12 @@
 # lib/helpers.py
 from models.artist import Artist
+from rich.console import Console
+from fetching_code import *
+from rich.table import Table
+from load_bar import *
 import colorama
+
+console = Console()
 
 def initialize_artist_data():
     Artist.create_table()
@@ -46,8 +52,13 @@ def search_artist():
      user_input = input("Select option: ")
      while True:
         if(user_input == 'a'):
+            fetching_animation()
+            table = Table(title="All Artists")
+            table.add_column("ID", style="cyan")
+            table.add_column("Name", style="magenta")
             for artist in Artist.all:
-                print(artist)
+                table.add_row(str(artist.id), artist.name)
+            console.print(table)
             user_input = input("\n Press 'return' to continue.")
             break
         elif(user_input == 'i'):
@@ -57,8 +68,12 @@ def search_artist():
                     user_input = int(user_input)
                     artist = Artist.find_by_id(user_input)
                     if(artist):
-                        print("\nHere is the artist that matched the entered id:")
-                        print(Artist.find_by_id(user_input))
+                        shorter_fetching_animation()
+                        table = Table(title="Artist by ID")
+                        table.add_column("ID", style="cyan")
+                        table.add_column("Name", style="magenta")
+                        table.add_row(str(artist.id), artist.name)
+                        console.print(table)
                     else:
                             print("\nArtist not found!")
                     user_input = input("\n Press 'return' to continue.")
@@ -74,8 +89,12 @@ def search_artist():
                     user_input = str(user_input)
                     artist = Artist.find_by_name(user_input)
                     if(artist):
-                         print("\nHere are the artist's that match that name:")
-                         print(Artist.find_by_name(user_input))
+                        shorter_fetching_animation()
+                        table = Table(title="Artist by ID")
+                        table.add_column("ID", style="cyan")
+                        table.add_column("Name", style="magenta")
+                        table.add_row(str(artist.id), artist.name)
+                        console.print(table)
                     else:
                          print("No artist was found with that name.")
                     user_input = input("\n Press 'return' to continue.")
@@ -95,8 +114,12 @@ def artist_search_options():
 def create_new_artist():
      user_input = input("Enter new artist name: ")
      new_artist = Artist.create(user_input)
-     print("Here is the new artist: ")
-     print(new_artist)
+     experimental_loadbar()
+     table = Table(title="Here is the new artist you created:")
+     table.add_column("ID", style="cyan")
+     table.add_column("Name", style="magenta")
+     table.add_row(str(new_artist.id), new_artist.name)
+     console.print(table)
      user_input = input("\n Press 'return' to continue.")
 
 def delete_artist():
@@ -118,26 +141,41 @@ def update_artist():
         updated_artist_name = input("Enter the updated name for the artist: ")
         artist.name = updated_artist_name
         artist.update()
-        print(f"Artist name has been changed to {artist}")
+        experimental_loadbar()
+        table = Table(title="Here is the new artist you created:")
+        table.add_column("ID", style="cyan")
+        table.add_column("Name", style="magenta")
+        table.add_row(str(artist.id), artist.name)
+        console.print(table)
     else:
          raise Exception("Could not update artist.")
     user_input = input("\n Press 'return' to continue.")
 
 def get_artist_album():
-     while True:
-            try:
-                user_input = input("Enter artist's ID to retrieve album: ")
-                user_input = int(user_input)
-                artist = Artist.find_by_id(user_input)
-                if(artist):
-                        print(f"Here is Artist #{artist.id}'s albums:")
-                        print(artist.albums())
-                else:
-                     print("\nAlbum was not found.")
-                user_input = input("\n Press 'return' to continue.")
-                break
-            except:
-                 print("Please enter correct input.")
+  while True:
+    try:
+      user_input = input("Enter artist's ID to retrieve album: ")
+      user_input = int(user_input)
+      artist = Artist.find_by_id(user_input)
+      if(artist):
+          artist_album = artist.albums()
+          if artist_album:
+            fetching_animation()
+            table = Table(title=f"Albums by Artist #{artist.id}")
+            table.add_column("ID", style="cyan")
+            table.add_column("Name", style="green")
+            table.add_column("Year", style="blue")
+            table.add_column("Favorite Song", style="magenta")
+            table.add_column("Artist ID",style="white")
+            for album in artist_album:
+              table.add_row(str(album.id), album.name, str(album.year), album.songs, str(album.artist_id))
+            console.print(table)
+      else:
+            print("\nAlbum was not found.")
+      user_input = input("\n Press 'return' to continue.")
+      break
+    except:
+          print("Please enter correct input.")
                     
 
           

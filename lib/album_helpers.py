@@ -1,4 +1,7 @@
 from models.album import Album
+from rich.console import Console
+from fetching_code import *
+from rich.table import Table
 import colorama
 
 def initialize_album_data():
@@ -47,8 +50,16 @@ def search_for_album():
     user_input = input("Please choose option:")
     while True:
         if(user_input == 'a'):
+            fetching_animation()
+            table = Table(title="All albums")
+            table.add_column("ID", style="cyan")
+            table.add_column("Name", style="green")
+            table.add_column("Year", style="blue")
+            table.add_column("Favorite Song", style="magenta")
+            table.add_column("Artist ID", style="white")
             for album in Album.all:
-                print(album)
+                table.add_row(str(album.id), album.name, str(album.year), album.songs, str(album.artist_id))
+            console.print(table)
             user_input = input("\n Press 'return' to continue.")
             break
         elif(user_input == 'i'):
