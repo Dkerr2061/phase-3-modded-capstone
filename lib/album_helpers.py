@@ -3,7 +3,7 @@ from rich.console import Console
 from fetching_code import *
 from rich.table import Table
 from load_bar import *
-import colorama
+
 
 console = Console()
 
@@ -12,47 +12,47 @@ def initialize_album_data():
     Album.get_all()
 
 def interact_with_album_data():
-    print("You are interacting with the album data.")
+    console.print("You are interacting with the album data.", style="bright_cyan")
     while True:
         album_menu()
         user_input = input("Please select one of the following options:")
-        if(user_input == 'a'):
+        if(user_input == '1'):
             search_for_album()
             break
-        elif(user_input == 'c'):
+        elif(user_input == '2'):
             create_new_album()
             break
-        elif(user_input == 'u'):
+        elif(user_input == '3'):
             update_album()
             break
-        elif(user_input == 'ar'):
+        elif(user_input == '4'):
             list_of_artists()
             break
-        elif(user_input == 'd'):
+        elif(user_input == '5'):
             delete_album()
             break
         else:
-            print("Invalid input, please try again.")
+            console.print("Invalid input, please try again.", style="orange_red1")
 
 
 def album_menu():
-    print("\nEnter A to search for album:")
-    print("Enter C to create a new album:")
-    print("Enter U to update an existing album:")
-    print("Enter AR to get the album's artist information:")
-    print("Enter D to delete album\n")
+    console.print("\n1. To search for album:", style="bright_magenta")
+    console.print("2. To create a new album:", style="bright_magenta")
+    console.print("3. To update an existing album:", style="bright_magenta")
+    console.print("4. To get the album's artist information:", style="bright_magenta")
+    console.print("5. To delete album\n", style="bright_magenta")
 
 def search_for_album_menu():
-    print("\nChoose one of the following options:")
-    print("Press A to get all albums:")
-    print("Press I to search by id:")
-    print("Press Y to search by year:\n")
+    console.print("\nChoose one of the following options:", style="bright_cyan")
+    console.print("1. To get all albums:", style="bright_magenta")
+    console.print("2. To search by id:", style="bright_magenta")
+    console.print("3. To search by year:\n", style="bright_magenta")
 
 def search_for_album():
     search_for_album_menu()
     user_input = input("Please choose option:")
     while True:
-        if(user_input == 'a'):
+        if(user_input == '1'):
             fetching_animation()
             table = Table(title="All albums")
             table.add_column("ID", style="cyan")
@@ -65,7 +65,7 @@ def search_for_album():
             console.print(table)
             user_input = input("\n Press 'return' to continue.")
             break
-        elif(user_input == 'i'):
+        elif(user_input == '2'):
             while True:
                 try:
                     user_input = input("\nEnter the album's ID: ")
@@ -82,13 +82,13 @@ def search_for_album():
                         table.add_row(str(album.id), album.name, str(album.year), album.songs, str(album.artist_id))
                         console.print(table)
                     else:
-                            print("\nAlbum not found!")
+                            console.print("\nAlbum not found!", style="orange_red1")
                     user_input = input("\n Press 'return' to continue.")
                     break
                 except:
-                    print("\n Invalid input, please try again.")
+                    console.print("\n Invalid input, please try again.", style="orange_red1")
             break
-        elif(user_input == 'y'):
+        elif(user_input == '3'):
             while True:
                 try:
                     user_input = input("\nEnter album's release year: ")
@@ -106,11 +106,11 @@ def search_for_album():
                           table.add_row(str(album.id), album.name, str(album.year), album.songs, str(album.artist_id))
                         console.print(table)                        
                     else:
-                        print("\nAlbum not found!")
+                        console.print("\nAlbum not found!", style="orange_red1")
                     user_input = input("\n Press 'return' to continue.")
                     break
                 except:
-                    print("\n Invalid input, please try again.")
+                    console.print("\n Invalid input, please try again.", style="orange_red1")
             break
 
 
@@ -133,8 +133,8 @@ def create_new_album():
         table.add_row(str(new_album.id), new_album.name, str(new_album.year), new_album.songs, str(new_album.artist_id))
         console.print(table)
         user_input = input("\n Press 'return' to continue.")
-    except Exception as exc:
-        print("Error, new album could not be created.", exc)
+    except Exception:
+        console.print("Error, new album could not be created.", style="orange_red1")
 
 def update_album():
     user_input = input("Enter album's ID: ")
@@ -170,9 +170,9 @@ def delete_album():
     album = Album.find_by_id(id_)
     if(album):
         album.delete()
-        print(f"Album with the id of {id_} has been deleted.")
+        console.print(f"Album with the id of {id_} has been deleted.", style="orange_red1")
     else:
-         print(f"Album with id {id_} not found")
+         console.print(f"Album with id {id_} not found", style="orange_red1")
     user_input = input("\n Press 'return' to continue.")
 
 def list_of_artists():
@@ -196,5 +196,5 @@ def list_of_artists():
         console.print(table)
 
     else:
-        print(f"Artist {artist_id} was not found.")
+        console.print(f"Artist {artist_id} was not found.", style="orange_red1")
     user_input = input("\n Press 'return' to continue.")

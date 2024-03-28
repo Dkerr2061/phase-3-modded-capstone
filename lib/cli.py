@@ -26,7 +26,7 @@ def main():
 
 
 def menu():
-    console.print("Welcome!", style="bright_cyan")
+    console.print("Welcome!", style="blink")
     console.print("\nPlease select an option:", style="underline")
     console.print("1. Access Artist Data", style="bright_yellow")
     console.print("2. Access Album Data", style="bright_yellow")

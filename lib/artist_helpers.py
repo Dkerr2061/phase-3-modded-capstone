@@ -4,7 +4,7 @@ from rich.console import Console
 from fetching_code import *
 from rich.table import Table
 from load_bar import *
-import colorama
+
 
 console = Console()
 
@@ -17,41 +17,41 @@ def interact_with_artist_data():
     console.log("You are interacting with the artist data.", style="bright_green")
     while True:
         artist_menu()
-        user_input = input("Select and option: ")
-        if(user_input == 'a'):
+        user_input = input("Select option: ")
+        if(user_input == '1'):
              search_artist()
              break
-        elif (user_input == 'c'):
+        elif (user_input == '2'):
              create_new_artist()
              break
-        elif (user_input == 'u'):
+        elif (user_input == '3'):
              update_artist()
              break
-        elif (user_input == 'al'):
+        elif (user_input == '4'):
              get_artist_album()
              break
-        elif (user_input == 'd'):
+        elif (user_input == '5'):
              delete_artist()
              break
         else:
-             print(colorama.Fore.RED + 'Invalid input, please try again.')
-             print(colorama.Fore.RESET)
+             console.print('Invalid input, please try again.', style="orange_red1")
+             
             
 
 
 def artist_menu():
-        print("\nPress A to search artists")
-        print("Press C to create artist")
-        print("Press U to update artist")
-        print("Press AL to get artist album's")
-        print("Press D to delete artist\n")
+        console.print("\n1. To search artists", style="royal_blue1")
+        console.print("2. To create artist", style="royal_blue1")
+        console.print("3. To update artist", style="royal_blue1")
+        console.print("4. To get artist album's", style="royal_blue1")
+        console.print("5. To delete artist\n", style="royal_blue1")
 
         
 def search_artist():
      artist_search_options()
      user_input = input("Select option: ")
      while True:
-        if(user_input == 'a'):
+        if(user_input == '1'):
             fetching_animation()
             table = Table(title="All Artists")
             table.add_column("ID", style="cyan")
@@ -61,7 +61,7 @@ def search_artist():
             console.print(table)
             user_input = input("\n Press 'return' to continue.")
             break
-        elif(user_input == 'i'):
+        elif(user_input == '2'):
             while True:
                 try:
                     user_input = input("\nEnter the id number for the artist: ")
@@ -75,16 +75,16 @@ def search_artist():
                         table.add_row(str(artist.id), artist.name)
                         console.print(table)
                     else:
-                            print("\nArtist not found!")
+                            console.print("\nArtist not found!", style="orange_red1")
                     user_input = input("\n Press 'return' to continue.")
                     break
                 except:
-                        print("Invalid input, please try again.")
+                        console.print("Invalid input, please try again.", style="orange_red1")
             break
-        elif(user_input == 'n'):
+        elif(user_input == '3'):
             while True:
                 try:
-                    print("\nTo search for artist name make sure that every word is Capitalized.")
+                    console.print("\nTo search for artist name make sure that every word is Capitalized.", style="green")
                     user_input = input("Enter artist's name: ")
                     user_input = str(user_input)
                     artist = Artist.find_by_name(user_input)
@@ -105,10 +105,10 @@ def search_artist():
 
 
 def artist_search_options():
-     print("\nWould you like to see all or search by ID or Name?")
-     print("Press A to see all artist's.")
-     print("Press I to search by id.")
-     print("Press N to search by name.\n")
+     console.print("\nWould you like to see all or search by ID or Name?", style="bright_green")
+     console.print("1. To see all artist's.", style="royal_blue1")
+     console.print("2. To search by id.", style="royal_blue1")
+     console.print("3. To search by name.\n", style="royal_blue1")
 
 
 def create_new_artist():
@@ -128,9 +128,9 @@ def delete_artist():
     artist = Artist.find_by_id(user_input)
     if artist:
         artist.delete()
-        print(f"Artist with the id of {user_input} has been deleted.")
+        console.print(f"Artist with the id of {user_input} has been deleted.", style="orange_red1")
     else:
-         print(f"Artist with id {user_input} not found")
+         console.print(f"Artist with id {user_input} not found", style="red1")
     user_input = input("\n Press 'return' to continue.")
 
 def update_artist():
@@ -171,11 +171,11 @@ def get_artist_album():
               table.add_row(str(album.id), album.name, str(album.year), album.songs, str(album.artist_id))
             console.print(table)
       else:
-            print("\nAlbum was not found.")
+            console.print("\nAlbum was not found.", style="red1")
       user_input = input("\n Press 'return' to continue.")
       break
     except:
-          print("Please enter correct input.")
+          console.print("Please enter correct input.", style="red1")
                     
 
           
