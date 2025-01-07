@@ -1,15 +1,17 @@
 # lib/cli.py
-import colorama
+
 from rich.console import Console
 from load_bar import *
 from artist_helpers import *
 from album_helpers import *
 
-console = Console()    
+console = Console()
+
 
 def exit_program():
     console.print("Goodbye!\n")
     exit()
+
 
 def main():
     while True:
@@ -31,9 +33,6 @@ def menu():
     console.print("1. Access Artist Data", style="bright_yellow")
     console.print("2. Access Album Data", style="bright_yellow")
     console.print("0. Exit the program", style="bright_yellow")
-
-    
-
 
 
 if __name__ == "__main__":
